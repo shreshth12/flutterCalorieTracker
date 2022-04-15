@@ -1,10 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:receipe_flutter/authentication.dart';
-import 'package:receipe_flutter/database.dart';
+import 'package:receipe_flutter/services/authentication.dart';
 import 'package:receipe_flutter/screens/homeScreen.dart';
 import 'package:receipe_flutter/screens/signUp.dart';
-import 'package:receipe_flutter/sharedPref.dart';
 
 class signIn extends StatefulWidget {
   const signIn({Key? key}) : super(key: key);
@@ -19,19 +19,8 @@ class _signInState extends State<signIn> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
   bool _isLoading = false;
-  QuerySnapshot? snapShotUserInfo;
 
-  void loginUser() async {
-    // QuerySnapshot? searchSnapshot;
-
-    HelperFunctions.saveUserEmailSharedPreference(emailController.text);
-
-    DatabaseMethods().getUserByEmail(emailController.text).then((val) {
-      snapShotUserInfo = val;
-      HelperFunctions.saveUserNameSharedPreference(
-          snapShotUserInfo!.docs[0].get("username"));
-    });
-
+  loginUser() async {
     setState(() {
       _isLoading = true;
     });
@@ -40,21 +29,38 @@ class _signInState extends State<signIn> {
         email: emailController.text, password: passwordController.text);
 
     if (res == 'success') {
-      HelperFunctions.saveUserLoggedInSharedPreference(true);
-
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => homeScreen()));
     } else {
-      print('Wrong email or pass');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res),
+      ));
+      print(res);
     }
     setState(() {
       _isLoading = false;
     });
   }
 
+  validation() {
+    final FormState? _form = _formKey.currentState;
+    if (_form!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final emailField = TextFormField(
+      validator: (value) {
+        if (value == "") {
+          return "Enter a value";
+        } else if (!value!.contains("@")) {
+          return "This is not an email";
+        }
+      },
       autofocus: false,
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
@@ -70,6 +76,11 @@ class _signInState extends State<signIn> {
     );
 
     final passwordField = TextFormField(
+      validator: (value) {
+        if (value == "") {
+          return "Enter a value";
+        }
+      },
       autofocus: false,
       obscureText: true,
       controller: passwordController,
@@ -91,13 +102,16 @@ class _signInState extends State<signIn> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: loginUser,
+        onPressed: () => {
+          if (validation()) {loginUser()}
+        },
         child: _isLoading
-            ? const Center(
+            ? Center(
                 child: CircularProgressIndicator(
                   color: Colors.white,
                 ),
               )
+            // ignore: prefer_const_constructors
             : Text(
                 "Login",
                 textAlign: TextAlign.center,
