@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:receipe_flutter/screens/homeScreen.dart';
 import 'package:receipe_flutter/screens/signIn.dart';
-import 'package:receipe_flutter/sharedPref.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,14 +46,6 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     // getLoggedInState();
     super.initState();
-  }
-
-  getLoggedInState() async {
-    await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-      setState(() {
-        userIsLoggedIn = value!;
-      });
-    });
   }
 
   @override
