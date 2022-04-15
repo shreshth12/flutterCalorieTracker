@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:receipe_flutter/authentication.dart';
+import 'package:receipe_flutter/screens/homeScreen.dart';
+import 'package:receipe_flutter/services/authentication.dart';
 
 class signUp extends StatefulWidget {
   const signUp({Key? key}) : super(key: key);
@@ -29,14 +30,41 @@ class _signUpState extends State<signUp> {
         password: passwordEditingController.text,
         username: userNameEditingController.text);
 
+    if (res == 'success') {
+      AuthMethods().loginUser(
+          email: emailEditingController.text,
+          password: passwordEditingController.text);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => homeScreen()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res),
+      ));
+      print(res);
+    }
+
     setState(() {
       _isLoading = false;
     });
   }
 
+  validation() {
+    final FormState? _form = _formKey.currentState;
+    if (_form!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final userNameField = TextFormField(
+      validator: (value) {
+        if (value == "") {
+          return "Enter a value";
+        }
+      },
       autofocus: false,
       controller: userNameEditingController,
       keyboardType: TextInputType.emailAddress,
@@ -52,6 +80,13 @@ class _signUpState extends State<signUp> {
     );
 
     final emailField = TextFormField(
+      validator: (value) {
+        if (value == "") {
+          return "Enter a value";
+        } else if (!value!.contains("@")) {
+          return "This is not an email";
+        }
+      },
       autofocus: false,
       controller: emailEditingController,
       keyboardType: TextInputType.name,
@@ -67,6 +102,11 @@ class _signUpState extends State<signUp> {
     );
 
     final passwordField = TextFormField(
+      validator: (value) {
+        if (value == "") {
+          return "Enter a value";
+        }
+      },
       autofocus: false,
       controller: passwordEditingController,
       obscureText: true,
@@ -88,7 +128,9 @@ class _signUpState extends State<signUp> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () => {signUpUser()},
+        onPressed: () => {
+          if (validation()) {signUpUser()}
+        },
         child: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(

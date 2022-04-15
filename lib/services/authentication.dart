@@ -9,7 +9,7 @@ class AuthMethods {
 
   //To sign up the user
 
-  Future<String> signUpUser({
+  signUpUser({
     required String username,
     required String email,
     required String password,
@@ -42,7 +42,7 @@ class AuthMethods {
 
 //Logging user in
 
-  Future<String> loginUser({
+  loginUser({
     required String email,
     required String password,
   }) async {
