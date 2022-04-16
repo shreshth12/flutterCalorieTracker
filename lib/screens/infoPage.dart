@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:receipe_flutter/screens/homeScreen.dart';
+import 'package:receipe_flutter/services/database.dart';
 
 class infoPage extends StatefulWidget {
   const infoPage({Key? key}) : super(key: key);
@@ -13,6 +16,8 @@ enum gender { Male, Female }
 
 class _infoPageState extends State<infoPage> {
   final _formKey = GlobalKey<FormState>();
+
+  User? current_user = FirebaseAuth.instance.currentUser;
 
   validation() {
     final FormState? _form = _formKey.currentState;
@@ -34,21 +39,46 @@ class _infoPageState extends State<infoPage> {
   }
 
   concludedData() {
-    print(_character);
-    print(dropdownValue);
-    print(HeightController.text);
-    print(WeightController.text);
-    print(AgeController.text);
+    // print(_character);
+    // print(dropdownValue);
+    // print(HeightController.text);
+    // print(WeightController.text);
+    // print(AgeController.text);
+    // print(current_user!.uid);
 
-    return Column(
-      children: [
-        Text("Gender: " + _character.toString()),
-        Text("Activity: " + dropdownValue),
-        Text("Height: " + HeightController.text),
-        Text("Weight: " + WeightController.text),
-        Text("Age: " + AgeController.text),
-      ],
-    );
+    double BMR = 0;
+    var W = int.parse(WeightController.text);
+    var H = int.parse(HeightController.text);
+    var A = int.parse(AgeController.text);
+
+    if (_character.toString() == 'gender.Male') {
+      BMR = (13.397 * W + 4.799 * H - 5.677 * A + 88.362);
+    } else {
+      BMR = (9.247 * W + 3.098 * H - 4.330 * A + 447.593);
+    }
+
+    if (dropdownValue.toString() == "Light: Exercise 1-3 times/week") {
+      BMR = BMR * 1.2;
+    } else if (dropdownValue.toString() ==
+        'Moderate: Exercise 4-5 times/week') {
+      BMR = BMR * 1.5;
+    } else {
+      BMR = BMR * 1.9;
+    }
+
+    addDataToUser(BMR, current_user!.uid);
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => homeScreen()));
+
+    // return Column(
+    //   children: [
+    //     Text("Gender: " + _character.toString()),
+    //     Text("Activity: " + dropdownValue),
+    //     Text("Height: " + HeightController.text),
+    //     Text("Weight: " + WeightController.text),
+    //     Text("Age: " + AgeController.text),
+    //   ],
+    // );
   }
 
   gender? _character = gender.Male;

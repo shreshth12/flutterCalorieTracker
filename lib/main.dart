@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:receipe_flutter/screens/homeScreen.dart';
 import 'package:receipe_flutter/screens/infoPage.dart';
 import 'package:receipe_flutter/screens/signIn.dart';
+import 'package:receipe_flutter/screens/signUp.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +40,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool userIsLoggedIn = false;
+  bool userIsLoggedIn = true;
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn == true ? infoPage() : infoPage(),
+      home: userIsLoggedIn == true ? signUp() : infoPage(),
     );
   }
 }
