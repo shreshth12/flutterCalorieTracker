@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:receipe_flutter/screens/homeScreen.dart';
+import 'package:receipe_flutter/screens/infoPage.dart';
 import 'package:receipe_flutter/screens/signIn.dart';
 
 Future<void> main() async {
@@ -55,7 +56,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn == true ? homeScreen() : signIn(),
+      home: userIsLoggedIn == true ? infoPage() : infoPage(),
     );
   }
 }
