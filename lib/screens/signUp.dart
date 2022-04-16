@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:receipe_flutter/screens/homeScreen.dart';
+import 'package:receipe_flutter/screens/infoPage.dart';
 import 'package:receipe_flutter/services/authentication.dart';
 
 class signUp extends StatefulWidget {
@@ -34,8 +34,8 @@ class _signUpState extends State<signUp> {
       AuthMethods().loginUser(
           email: emailEditingController.text,
           password: passwordEditingController.text);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => homeScreen()));
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => infoPage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(res),
