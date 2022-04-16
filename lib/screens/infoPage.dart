@@ -22,9 +22,6 @@ class _infoPageState extends State<infoPage> {
   validation() {
     final FormState? _form = _formKey.currentState;
     if (_form!.validate()) {
-      setState(() {
-        validated = true;
-      });
       return true;
     } else {
       return false;
@@ -38,14 +35,7 @@ class _infoPageState extends State<infoPage> {
     return double.tryParse(s) != null;
   }
 
-  concludedData() {
-    // print(_character);
-    // print(dropdownValue);
-    // print(HeightController.text);
-    // print(WeightController.text);
-    // print(AgeController.text);
-    // print(current_user!.uid);
-
+  concludedData() async {
     double BMR = 0;
     var W = int.parse(WeightController.text);
     var H = int.parse(HeightController.text);
@@ -66,28 +56,32 @@ class _infoPageState extends State<infoPage> {
       BMR = BMR * 1.9;
     }
 
-    addDataToUser(BMR, current_user!.uid);
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => homeScreen()));
+    if (dropdownValue2.toString() == "Lose weight: 1lb per week") {
+      BMR = BMR - 300;
+    } else if (dropdownValue2.toString() == 'Lose weight fast: 2lb per week') {
+      BMR = BMR - 600;
+    } else if (dropdownValue2.toString() == 'Gain weight') {
+      BMR = BMR + 350;
+    }
 
-    // return Column(
-    //   children: [
-    //     Text("Gender: " + _character.toString()),
-    //     Text("Activity: " + dropdownValue),
-    //     Text("Height: " + HeightController.text),
-    //     Text("Weight: " + WeightController.text),
-    //     Text("Age: " + AgeController.text),
-    //   ],
-    // );
+    String res = addDataToUser(BMR, current_user!.uid);
+    if (res == 'success') {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => homeScreen()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res),
+      ));
+      print(res);
+    }
   }
 
   gender? _character = gender.Male;
   String dropdownValue = 'Light: Exercise 1-3 times/week';
+  String dropdownValue2 = 'Lose weight: 1lb per week';
   final TextEditingController HeightController = new TextEditingController();
   final TextEditingController AgeController = new TextEditingController();
   final TextEditingController WeightController = new TextEditingController();
-
-  bool validated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -210,6 +204,32 @@ class _infoPageState extends State<infoPage> {
                     );
                   }).toList(),
                 ),
+                DropdownButton<String>(
+                  value: dropdownValue2,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue2 = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'Lose weight: 1lb per week',
+                    'Lose weight fast: 2lb per week',
+                    'Maintain Weight',
+                    'Gain weight',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
                 SizedBox(height: 15),
                 MaterialButton(
                   color: Color.fromARGB(255, 56, 80, 188),
@@ -218,11 +238,12 @@ class _infoPageState extends State<infoPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    validation();
+                    if (validation()) {
+                      concludedData();
+                    }
                   },
                 ),
                 SizedBox(height: 15),
-                validated ? concludedData() : Container(),
               ],
             ),
           ),
