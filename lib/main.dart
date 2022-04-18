@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn == true ? homeScreen() : infoPage(),
+      home: userIsLoggedIn == true ? signIn() : infoPage(),
     );
   }
 }

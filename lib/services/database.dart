@@ -19,18 +19,21 @@ addDataToUser(double calculatedBMR, String uid) {
 
 freshCalorieSetter(
     var user, var calories, var carbs, var fats, var protein, var foodName) {
-  FirebaseFirestore.instance
-      .collection('tracker')
-      .add({
-        "user": user,
-        "calories": calories,
-        "carbs": carbs,
-        "fats": fats,
-        "protein": protein,
-        "foodName": foodName
-      })
-      .then((value) => print("Calorie Data Added"))
-      .catchError((error) => print("Failed to add data: $error"));
+  String res = "Some error occured";
+  try {
+    FirebaseFirestore.instance.collection('tracker').add({
+      "user": user,
+      "calories": calories,
+      "carbs": carbs,
+      "fats": fats,
+      "protein": protein,
+      "foodName": foodName
+    });
+    res = 'success';
+  } catch (err) {
+    res = err.toString();
+  }
+  return res;
 }
 
 userDataRetriever(var user_email) async {
