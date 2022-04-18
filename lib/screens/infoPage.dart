@@ -66,7 +66,6 @@ class _infoPageState extends State<infoPage> {
 
     String res = addDataToUser(BMR, current_user!.uid);
     if (res == 'success') {
-      freshCalorieSetter(current_user!.email);
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => homeScreen()));
     } else {
