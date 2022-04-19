@@ -17,6 +17,7 @@ class homeScreen extends StatefulWidget {
 class _homeScreenState extends State<homeScreen> {
   String user_email = "afreshuser2@gmail.com";
 
+  double totalCaloriesConsumed = 0;
   Map<String, double> dataMap = {
     "Carbs": 0,
     "Protein": 0,
@@ -31,17 +32,32 @@ class _homeScreenState extends State<homeScreen> {
 
   @override
   void initState() {
+    double totalCarbs = 0;
+    double totalProtein = 0;
+    double totalFats = 0;
+    double totalCals = 0;
+    int start = 1;
     FirebaseFirestore.instance
         .collection('tracker')
         .where('user', isEqualTo: user_email)
         .get()
         .then((value) => value.docs.forEach((element) {
-              setState(() {
-                dataMap['Carbs'] = double.parse(element.data()['carbs']);
-                dataMap['Protein'] = double.parse(element.data()['protein']);
-                dataMap['Fats'] = double.parse(element.data()['fats']);
-              });
-              print(element.data()['carbs']);
+              totalCarbs += double.parse(element.data()['carbs']);
+              totalProtein += double.parse(element.data()['protein']);
+              totalFats += double.parse(element.data()['fats']);
+              totalCals += double.parse(element.data()['calories']);
+
+              // print(element.data()['carbs']);
+
+              if (start == value.docs.length) {
+                setState(() {
+                  dataMap['Carbs'] = totalCarbs;
+                  dataMap['Protein'] = totalProtein;
+                  dataMap['Fats'] = totalFats;
+                  totalCaloriesConsumed = totalCals;
+                });
+              }
+              start++;
             }));
     super.initState();
   }
@@ -61,9 +77,9 @@ class _homeScreenState extends State<homeScreen> {
               height: 300,
               width: 300,
               child: PieChart(
-                // centerText: "",
+                centerText: totalCaloriesConsumed.toString() + "kcal",
                 dataMap: dataMap,
-                chartType: ChartType.disc,
+                chartType: ChartType.ring,
                 baseChartColor: Colors.grey,
                 colorList: colorList,
               ),
@@ -80,8 +96,6 @@ class _homeScreenState extends State<homeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
-
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const addCalorie()),
