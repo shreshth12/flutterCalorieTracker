@@ -12,8 +12,6 @@ addDataToUser(double calculatedBMR, String uid) {
     res = err.toString();
   }
 
-  // .then((value) => {res = 'success'})
-  // .catchError((error) => {res = error});
   return res;
 }
 
