@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 addDataToUser(double calculatedBMR, String uid) {
   String res = "Some error occured";
@@ -34,15 +35,19 @@ freshCalorieSetter(
   return res;
 }
 
-userDataRetriever(var user_email) async {
-  await FirebaseFirestore.instance
+int userDataRetriever(var user_email) {
+  int totalCals = 0;
+
+  FirebaseFirestore.instance
       .collection('tracker')
       .where('user', isEqualTo: user_email)
       .get()
       .then((QuerySnapshot querySnapshot) {
     querySnapshot.docs.forEach((doc) {
-      print(doc["calories"]);
-      return doc["calories"];
+      // print(doc["calories"].runtimeType);
+      totalCals += int.parse(doc["calories"]);
+      print(totalCals.toString());
     });
   });
+  return totalCals;
 }

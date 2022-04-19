@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:receipe_flutter/services/database.dart';
 
 Widget userIndividualWidget(String user_email) {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
@@ -67,35 +68,7 @@ Widget userBmrWidget(String user_email) {
   );
 }
 
-Widget piewView() {
-  Map<String, double> dataMap = {
-    "Carbs": 0,
-    "Protein": 0,
-    "Fats": 10,
-  };
 
-  final colorList = <Color>[
-    Colors.black,
-    Colors.red,
-    Colors.blue,
-  ];
-
-  return Container(
-    height: 300,
-    width: 300,
-    padding: EdgeInsets.symmetric(horizontal: 16),
-    child: PieChart(
-      centerText: "Total consumed : 1276/2400",
-      dataMap: dataMap,
-      chartType: ChartType.ring,
-      baseChartColor: Colors.grey,
-      colorList: colorList,
-    ),
-
-    // gradientList: ---To add gradient colors---
-    // emptyColorGradient: ---Empty Color gradient---
-  );
-}
 
 
 
