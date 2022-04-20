@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:receipe_flutter/screens/addCalorieData.dart';
@@ -15,13 +16,20 @@ class homeScreen extends StatefulWidget {
 }
 
 class _homeScreenState extends State<homeScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   String user_email = "afreshuser2@gmail.com";
 
+  setUserCorrect() {
+    user_email = user!.email!;
+  }
+
   double totalCaloriesConsumed = 0;
+  int BMR = 0;
   Map<String, double> dataMap = {
-    "Carbs": 0,
-    "Protein": 0,
-    "Fats": 0,
+    "Carbs (gm)": 0,
+    "Protein (gm)": 0,
+    "Fats (gm)": 0,
   };
 
   final colorList = <Color>[
@@ -32,6 +40,7 @@ class _homeScreenState extends State<homeScreen> {
 
   @override
   void initState() {
+    setUserCorrect();
     double totalCarbs = 0;
     double totalProtein = 0;
     double totalFats = 0;
@@ -51,14 +60,25 @@ class _homeScreenState extends State<homeScreen> {
 
               if (start == value.docs.length) {
                 setState(() {
-                  dataMap['Carbs'] = totalCarbs;
-                  dataMap['Protein'] = totalProtein;
-                  dataMap['Fats'] = totalFats;
+                  dataMap['Carbs (gm)'] = totalCarbs;
+                  dataMap['Protein (gm)'] = totalProtein;
+                  dataMap['Fats (gm)'] = totalFats;
                   totalCaloriesConsumed = totalCals;
                 });
               }
               start++;
             }));
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: user_email)
+        .get()
+        .then((value) => {
+              setState(() {
+                BMR = value.docs[0].get('BMR');
+              })
+            });
+
     super.initState();
   }
 
@@ -67,6 +87,7 @@ class _homeScreenState extends State<homeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("MyCalorieTracker"),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -74,10 +95,13 @@ class _homeScreenState extends State<homeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: 300,
-              width: 300,
+              height: 350,
+              width: 350,
               child: PieChart(
-                centerText: totalCaloriesConsumed.toString() + "kcal",
+                centerText: totalCaloriesConsumed.toString() +
+                    "/" +
+                    BMR.toString() +
+                    " kCal",
                 dataMap: dataMap,
                 chartType: ChartType.ring,
                 baseChartColor: Colors.grey,
@@ -96,7 +120,7 @@ class _homeScreenState extends State<homeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const addCalorie()),
           );

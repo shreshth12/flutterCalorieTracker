@@ -15,8 +15,7 @@ class addCalorie extends StatefulWidget {
 class _addCalorieState extends State<addCalorie> {
   final _formKey = GlobalKey<FormState>();
 
-  User? current_user = FirebaseAuth.instance.currentUser;
-  String current_user_name = 'afreshuser2@gmail.com';
+  User? user = FirebaseAuth.instance.currentUser;
 
   validation() {
     final FormState? _form = _formKey.currentState;
@@ -36,8 +35,7 @@ class _addCalorieState extends State<addCalorie> {
 
   addToDatabase() {
     String res = freshCalorieSetter(
-        // current_user!.email,
-        current_user_name,
+        user!.email,
         calorieController.text,
         carbsController.text,
         fatsController.text,

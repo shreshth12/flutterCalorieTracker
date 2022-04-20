@@ -34,20 +34,3 @@ freshCalorieSetter(
   }
   return res;
 }
-
-int userDataRetriever(var user_email) {
-  int totalCals = 0;
-
-  FirebaseFirestore.instance
-      .collection('tracker')
-      .where('user', isEqualTo: user_email)
-      .get()
-      .then((QuerySnapshot querySnapshot) {
-    querySnapshot.docs.forEach((doc) {
-      // print(doc["calories"].runtimeType);
-      totalCals += int.parse(doc["calories"]);
-      print(totalCals.toString());
-    });
-  });
-  return totalCals;
-}
