@@ -1,8 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:receipe_flutter/screens/addCalorieData.dart';
 import 'package:receipe_flutter/services/database.dart';
+import 'package:receipe_flutter/services/homeScreenWidgets.dart';
 
 class homeScreen extends StatefulWidget {
   const homeScreen({Key? key}) : super(key: key);
@@ -12,70 +16,111 @@ class homeScreen extends StatefulWidget {
 }
 
 class _homeScreenState extends State<homeScreen> {
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('tracker')
-      .where('user', isEqualTo: "afreshuser2@gmail.com")
-      .snapshots();
+  User? user = FirebaseAuth.instance.currentUser;
+
+  String user_email = "afreshuser2@gmail.com";
+
+  setUserCorrect() {
+    user_email = user!.email!;
+  }
+
+  double totalCaloriesConsumed = 0;
+  int BMR = 0;
+  Map<String, double> dataMap = {
+    "Carbs (gm)": 0,
+    "Protein (gm)": 0,
+    "Fats (gm)": 0,
+  };
+
+  final colorList = <Color>[
+    Colors.black,
+    Colors.red,
+    Colors.blue,
+  ];
+
+  @override
+  void initState() {
+    setUserCorrect();
+    double totalCarbs = 0;
+    double totalProtein = 0;
+    double totalFats = 0;
+    double totalCals = 0;
+    int start = 1;
+    FirebaseFirestore.instance
+        .collection('tracker')
+        .where('user', isEqualTo: user_email)
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              totalCarbs += double.parse(element.data()['carbs']);
+              totalProtein += double.parse(element.data()['protein']);
+              totalFats += double.parse(element.data()['fats']);
+              totalCals += double.parse(element.data()['calories']);
+
+              // print(element.data()['carbs']);
+
+              if (start == value.docs.length) {
+                setState(() {
+                  dataMap['Carbs (gm)'] = totalCarbs;
+                  dataMap['Protein (gm)'] = totalProtein;
+                  dataMap['Fats (gm)'] = totalFats;
+                  totalCaloriesConsumed = totalCals;
+                });
+              }
+              start++;
+            }));
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: user_email)
+        .get()
+        .then((value) => {
+              setState(() {
+                BMR = value.docs[0].get('BMR');
+              })
+            });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("MyCalorieTracker"),
+        automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              pieView(),
-              Container(
-                height: 500,
-                width: 500,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _usersStream,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Something went wrong');
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading");
-                    }
-                    return ListView(
-                      children:
-                          snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data =
-                            document.data()! as Map<String, dynamic>;
-                        return Container(
-                          child: Column(
-                            children: [
-                              Text(data['user'].toString()),
-                              Text(data['calories'].toString()),
-                              Text(data['carbs'].toString()),
-                              Text(data['fats'].toString()),
-                              Text(data['protein'].toString()),
-                              Text(data['foodName'].toString()),
-                              SizedBox(
-                                height: 20,
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 350,
+              width: 350,
+              child: PieChart(
+                centerText: totalCaloriesConsumed.toString() +
+                    "/" +
+                    BMR.toString() +
+                    " kCal",
+                dataMap: dataMap,
+                chartType: ChartType.ring,
+                baseChartColor: Colors.grey,
+                colorList: colorList,
               ),
-            ],
-          ),
+
+              // gradientList: ---To add gradient colors---
+              // emptyColorGradient: ---Empty Color gradient---
+            ),
+            Container(
+                height: 800,
+                width: 800,
+                child: userIndividualWidget(user_email)),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const addCalorie()),
           );
@@ -84,45 +129,6 @@ class _homeScreenState extends State<homeScreen> {
         icon: const Icon(Icons.add),
         backgroundColor: Colors.pink,
       ),
-    );
-  }
-}
-
-class pieView extends StatefulWidget {
-  const pieView({Key? key}) : super(key: key);
-
-  @override
-  State<pieView> createState() => _pieViewState();
-}
-
-class _pieViewState extends State<pieView> {
-  Map<String, double> dataMap = {
-    "Carbs": 0,
-    "Protein": 0,
-    "Fats": 10,
-  };
-
-  final colorList = <Color>[
-    Colors.black,
-    Colors.red,
-    Colors.blue,
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      width: 300,
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: PieChart(
-        centerText: "Total consumed : 1276/2400",
-        dataMap: dataMap,
-        chartType: ChartType.disc,
-        baseChartColor: Colors.grey,
-        colorList: colorList,
-      ),
-
-      // gradientList: ---To add gradient colors---
-      // emptyColorGradient: ---Empty Color gradient---
     );
   }
 }

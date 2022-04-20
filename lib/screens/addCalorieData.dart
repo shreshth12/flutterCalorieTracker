@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:receipe_flutter/screens/homeScreen.dart';
 import 'package:receipe_flutter/services/database.dart';
 
 class addCalorie extends StatefulWidget {
@@ -14,7 +15,7 @@ class addCalorie extends StatefulWidget {
 class _addCalorieState extends State<addCalorie> {
   final _formKey = GlobalKey<FormState>();
 
-  User? current_user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   validation() {
     final FormState? _form = _formKey.currentState;
@@ -34,14 +35,15 @@ class _addCalorieState extends State<addCalorie> {
 
   addToDatabase() {
     String res = freshCalorieSetter(
-        current_user!.email,
+        user!.email,
         calorieController.text,
         carbsController.text,
         fatsController.text,
         proteinController.text,
         foodNameController.text);
     if (res == "success") {
-      Navigator.pop(context);
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => homeScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(res),
