@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:receipe_flutter/screens/addCalorieData.dart';
+import 'package:receipe_flutter/screens/signIn.dart';
+import 'package:receipe_flutter/services/authentication.dart';
 import 'package:receipe_flutter/services/database.dart';
 import 'package:receipe_flutter/services/homeScreenWidgets.dart';
 
@@ -86,8 +88,42 @@ class _homeScreenState extends State<homeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MyCalorieTracker"),
         automaticallyImplyLeading: false,
+        title: Text("MyCalorieTracker"),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              onPressed: () => {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Are you sure'),
+                        content: const Text('you want to log out?'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => {
+                              Navigator.pop(context, 'OK'),
+                              AuthMethods().signOut(),
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          signIn()))
+                            },
+                            child: const Text('Logout'),
+                          ),
+                        ],
+                      ),
+                    )
+                  }),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -120,7 +156,7 @@ class _homeScreenState extends State<homeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const addCalorie()),
           );
