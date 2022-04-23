@@ -86,10 +86,17 @@ class _infoPageState extends State<infoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color.fromARGB(255, 162, 173, 179),
         appBar: AppBar(
-          title: Text('Enter details'),
+          title: Text(
+            'Enter details',
+            style: TextStyle(
+              fontSize: 17.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 56, 80, 188),
+          backgroundColor: Color.fromARGB(255, 121, 12, 116),
         ),
         body: Form(
           key: _formKey,
@@ -140,53 +147,78 @@ class _infoPageState extends State<infoPage> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(
-                  "Gender",
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 15),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                Row(
                   children: [
-                    ListTile(
-                      title: const Text('Male'),
-                      leading: Radio<gender>(
-                        value: gender.Male,
-                        groupValue: _character,
-                        onChanged: (gender? value) {
-                          setState(() {
-                            _character = value;
-                          });
-                        },
+                    Text(
+                      "Gender : ",
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    ListTile(
-                      title: const Text('Female'),
-                      leading: Radio<gender>(
-                        value: gender.Female,
-                        groupValue: _character,
-                        onChanged: (gender? value) {
-                          setState(() {
-                            _character = value;
-                          });
-                        },
+                    SizedBox(
+                      width: 150,
+                      child: ListTile(
+                        title: const Text(
+                          'Male',
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        leading: Radio<gender>(
+                          value: gender.Male,
+                          groupValue: _character,
+                          onChanged: (gender? value) {
+                            setState(() {
+                              _character = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      child: ListTile(
+                        title: const Text(
+                          'Female',
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        leading: Radio<gender>(
+                          value: gender.Female,
+                          groupValue: _character,
+                          onChanged: (gender? value) {
+                            setState(() {
+                              _character = value;
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 25),
                 Text(
-                  "Activity Level",
-                  textAlign: TextAlign.left,
+                  "<- Activity Level ->",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+                SizedBox(height: 25),
                 DropdownButton<String>(
                   value: dropdownValue,
                   icon: const Icon(Icons.arrow_downward),
                   elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 121, 12, 116)),
                   underline: Container(
                     height: 2,
-                    color: Colors.deepPurpleAccent,
+                    color: Color.fromARGB(255, 121, 12, 116),
                   ),
                   onChanged: (String? newValue) {
                     setState(() {
@@ -208,10 +240,12 @@ class _infoPageState extends State<infoPage> {
                   value: dropdownValue2,
                   icon: const Icon(Icons.arrow_downward),
                   elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 121, 12, 116)),
                   underline: Container(
                     height: 2,
-                    color: Colors.deepPurpleAccent,
+                    color: Color.fromARGB(255, 121, 12, 116),
                   ),
                   onChanged: (String? newValue) {
                     setState(() {
@@ -230,9 +264,14 @@ class _infoPageState extends State<infoPage> {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 25),
                 MaterialButton(
-                  color: Color.fromARGB(255, 56, 80, 188),
+                  height: 50,
+                  minWidth: 80,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Color.fromARGB(255, 5, 0, 5))),
+                  color: Color.fromARGB(255, 121, 12, 116),
                   child: Text(
                     "Calculate",
                     style: TextStyle(color: Colors.white),
