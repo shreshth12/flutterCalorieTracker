@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:receipe_flutter/screens/addCalorieData.dart';
 import 'package:receipe_flutter/screens/signIn.dart';
@@ -42,12 +43,30 @@ class _homeScreenState extends State<homeScreen> {
 
   @override
   void initState() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
     setUserCorrect();
     double totalCarbs = 0;
     double totalProtein = 0;
     double totalFats = 0;
     double totalCals = 0;
     int start = 1;
+
+    //This is to check if its a new day, if yes, remove all data and start fresh
+    try {
+      FirebaseFirestore.instance
+          .collection('tracker')
+          .where('user', isEqualTo: user_email)
+          .get()
+          .then((value) => {
+                if (value.docs[0].get('datetime') != formattedDate)
+                  {deleteData()}
+              });
+    } catch (err) {
+      print(err);
+    }
+
     FirebaseFirestore.instance
         .collection('tracker')
         .where('user', isEqualTo: user_email)
