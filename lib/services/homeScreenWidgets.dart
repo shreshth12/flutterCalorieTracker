@@ -21,15 +21,90 @@ Widget userIndividualWidget(String user_email) {
         return ListView.builder(
           itemCount: snapshot.data!.size,
           itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Text(snapshot.data!.docs[index].get("user").toString()),
-                Text(snapshot.data!.docs[index].get("calories").toString()),
-                Text(snapshot.data!.docs[index].get("carbs").toString()),
-                Text(snapshot.data!.docs[index].get("fats").toString()),
-                Text(snapshot.data!.docs[index].get("protein").toString()),
-                Text(snapshot.data!.docs[index].get("foodName").toString()),
-              ],
+            return Container(
+              margin: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(3.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 5,
+                  color: Color.fromARGB(255, 1, 15, 26),
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Text(
+                      "Food : " +
+                          snapshot.data!.docs[index].get("foodName").toString(),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 12, 0, 0),
+                          fontWeight: FontWeight.w900,
+                          fontStyle: FontStyle.italic,
+                          fontFamily: 'Open Sans',
+                          fontSize: 35),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "Calories : " +
+                          snapshot.data!.docs[index].get("calories").toString(),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 12, 0, 0),
+                          fontWeight: FontWeight.w900,
+                          fontStyle: FontStyle.italic,
+                          fontFamily: 'Open Sans',
+                          fontSize: 35),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "Carbohydrates : " +
+                          snapshot.data!.docs[index].get("carbs").toString(),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 12, 0, 0),
+                          fontWeight: FontWeight.w900,
+                          fontStyle: FontStyle.italic,
+                          fontFamily: 'Open Sans',
+                          fontSize: 35),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "Fats : " +
+                          snapshot.data!.docs[index].get("fats").toString(),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 12, 0, 0),
+                          fontWeight: FontWeight.w900,
+                          fontStyle: FontStyle.italic,
+                          fontFamily: 'Open Sans',
+                          fontSize: 35),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "Proteins : " +
+                          snapshot.data!.docs[index].get("protein").toString(),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 12, 0, 0),
+                          fontWeight: FontWeight.w900,
+                          fontStyle: FontStyle.italic,
+                          fontFamily: 'Open Sans',
+                          fontSize: 35),
+                    ),
+                    SizedBox(
+                      height: 70,
+                    )
+                  ],
+                ),
+              ),
             );
           },
         );

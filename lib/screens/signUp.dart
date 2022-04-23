@@ -123,7 +123,7 @@ class _signUpState extends State<signUp> {
 
     final signUpButton = Material(
       elevation: 5,
-      color: Colors.blueAccent,
+      color: Color.fromARGB(255, 121, 12, 116),
       borderRadius: BorderRadius.circular(30),
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -149,8 +149,17 @@ class _signUpState extends State<signUp> {
     );
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 162, 173, 179),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color.fromARGB(255, 121, 12, 116),
+        title: Text(
+          "My Calorie Tracker",
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
         elevation: 0,
         leading: IconButton(
           icon: Icon(
@@ -162,7 +171,6 @@ class _signUpState extends State<signUp> {
           },
         ),
       ),
-      backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
           child: Container(

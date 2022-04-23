@@ -61,8 +61,17 @@ class _addCalorieState extends State<addCalorie> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 162, 173, 179),
       appBar: AppBar(
-        title: Text("MyCalorieTracker"),
+        backgroundColor: Color.fromARGB(255, 121, 12, 116),
+        title: Text(
+          "My Calorie Tracker",
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -71,6 +80,10 @@ class _addCalorieState extends State<addCalorie> {
           child: Column(
             children: <Widget>[
               TextFormField(
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 controller: foodNameController,
                 validator: (value) {
                   if (value == '') {
@@ -83,6 +96,10 @@ class _addCalorieState extends State<addCalorie> {
                 ),
               ),
               TextFormField(
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 controller: calorieController,
                 validator: (value) {
                   if (value == '') {
@@ -95,6 +112,10 @@ class _addCalorieState extends State<addCalorie> {
                 ),
               ),
               TextFormField(
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 controller: carbsController,
                 validator: (value) {
                   if (value == '') {
@@ -109,6 +130,10 @@ class _addCalorieState extends State<addCalorie> {
                 ),
               ),
               TextFormField(
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 controller: proteinController,
                 validator: (value) {
                   if (value == '') {
@@ -124,6 +149,10 @@ class _addCalorieState extends State<addCalorie> {
               ),
               SizedBox(height: 15),
               TextFormField(
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 controller: fatsController,
                 validator: (value) {
                   if (value == '') {
@@ -139,7 +168,12 @@ class _addCalorieState extends State<addCalorie> {
               ),
               SizedBox(height: 15),
               MaterialButton(
-                color: Colors.pink,
+                height: 50,
+                minWidth: 80,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Color.fromARGB(255, 5, 0, 5))),
+                color: Color.fromARGB(255, 121, 12, 116),
                 child: Text(
                   "Add",
                   style: TextStyle(color: Colors.white),

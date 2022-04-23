@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:receipe_flutter/screens/addCalorieData.dart';
 import 'package:receipe_flutter/screens/homeScreen.dart';
 import 'package:receipe_flutter/screens/infoPage.dart';
 import 'package:receipe_flutter/screens/signIn.dart';

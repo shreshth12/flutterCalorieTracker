@@ -35,9 +35,9 @@ class _homeScreenState extends State<homeScreen> {
   };
 
   final colorList = <Color>[
-    Colors.black,
-    Colors.red,
-    Colors.blue,
+    Color.fromARGB(255, 29, 20, 125),
+    Color.fromARGB(255, 148, 43, 36),
+    Color.fromARGB(255, 70, 131, 10),
   ];
 
   @override
@@ -87,9 +87,18 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 162, 173, 179),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 121, 12, 116),
         automaticallyImplyLeading: false,
-        title: Text("MyCalorieTracker"),
+        title: Text(
+          "My Calorie Tracker",
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(
@@ -126,32 +135,32 @@ class _homeScreenState extends State<homeScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 350,
-              width: 350,
-              child: PieChart(
-                centerText: totalCaloriesConsumed.toString() +
-                    "/" +
-                    BMR.toString() +
-                    " kCal",
-                dataMap: dataMap,
-                chartType: ChartType.ring,
-                baseChartColor: Colors.grey,
-                colorList: colorList,
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                height: 400,
+                width: 400,
+                child: PieChart(
+                  centerText: totalCaloriesConsumed.toString() +
+                      "/" +
+                      BMR.toString() +
+                      " kCal",
+                  dataMap: dataMap,
+                  chartType: ChartType.ring,
+                  baseChartColor: Colors.grey,
+                  colorList: colorList,
+                ),
               ),
-
-              // gradientList: ---To add gradient colors---
-              // emptyColorGradient: ---Empty Color gradient---
-            ),
-            Container(
-                height: 800,
-                width: 800,
-                child: userIndividualWidget(user_email)),
-          ],
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                  height: 800,
+                  width: 800,
+                  child: userIndividualWidget(user_email)),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -163,8 +172,32 @@ class _homeScreenState extends State<homeScreen> {
         },
         label: const Text('Add'),
         icon: const Icon(Icons.add),
-        backgroundColor: Colors.pink,
+        backgroundColor: Color.fromARGB(255, 121, 12, 116),
       ),
     );
   }
 }
+
+
+
+// Container(
+//               height: 350,
+//               width: 350,
+//               child: PieChart(
+//                 centerText: totalCaloriesConsumed.toString() +
+//                     "/" +
+//                     BMR.toString() +
+//                     " kCal",
+//                 dataMap: dataMap,
+//                 chartType: ChartType.ring,
+//                 baseChartColor: Colors.grey,
+//                 colorList: colorList,
+//               ),
+
+//               // gradientList: ---To add gradient colors---
+//               // emptyColorGradient: ---Empty Color gradient---
+//             ),
+//             Container(
+//                 height: 800,
+//                 width: 800,
+//                 child: userIndividualWidget(user_email)),

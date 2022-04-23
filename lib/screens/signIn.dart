@@ -96,7 +96,7 @@ class _signInState extends State<signIn> {
 
     final loginButton = Material(
       elevation: 5,
-      color: Colors.blueAccent,
+      color: Color.fromARGB(255, 121, 12, 116),
       borderRadius: BorderRadius.circular(30),
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -123,7 +123,18 @@ class _signInState extends State<signIn> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 162, 173, 179),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 121, 12, 116),
+        title: Text(
+          "My Calorie Tracker",
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -164,7 +175,7 @@ class _signInState extends State<signIn> {
                             },
                             child: Text("Sign up!",
                                 style: TextStyle(
-                                    color: Colors.blueAccent,
+                                    color: Color.fromARGB(255, 121, 12, 116),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 15)),
                           )
