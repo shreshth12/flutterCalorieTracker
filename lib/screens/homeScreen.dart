@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:receipe_flutter/screens/addCalorieData.dart';
+import 'package:receipe_flutter/screens/recipeScreen.dart';
 import 'package:receipe_flutter/screens/signIn.dart';
 import 'package:receipe_flutter/services/authentication.dart';
 import 'package:receipe_flutter/services/database.dart';
@@ -156,7 +157,26 @@ class _homeScreenState extends State<homeScreen> {
       body: SingleChildScrollView(
         child: Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RecipeScreen()),
+                  );
+                },
+                child: Text('Find A Recipe'),
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 121, 12, 116),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               Container(
                 height: 400,
                 width: 400,

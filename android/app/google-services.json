@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "569435323993",
+    "project_id": "mobileappfinal-b9a4e",
+    "storage_bucket": "mobileappfinal-b9a4e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569435323993:android:1254703500eeaa6147bb48",
+        "android_client_info": {
+          "package_name": "com.example.receipe_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569435323993-k243jsf3oob4fljmpncfhhsfqfmsn1qo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbEEFqW9F2DHTTGf06c9MEnWso6r2sxU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569435323993-k243jsf3oob4fljmpncfhhsfqfmsn1qo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "569435323993-r05c7oclrpb3u776ne08bnc2ndmsri60.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.receipeFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
