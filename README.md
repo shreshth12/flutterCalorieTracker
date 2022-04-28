@@ -1,16 +1,20 @@
 # receipe_flutter
 
-A new Flutter project.
+This is a calorie tracker application made in flutter.
 
-## Getting Started
+# How to run this application? 
 
-This project is a starting point for a Flutter application.
+In order to run it on web, first clone then you will need flutter firebase api keys. Create a .env file in the same repository as the application. Go to https://firebase.google.com and create a new web app. 
+There you will find api key information.
+Enter it like this :-
 
-A few resources to get you started if this is your first Flutter project:
+apiKey = "Your_key"
+authDomain = "Your_key"
+projectId = "Your_key"
+storageBucket = "Your_key"
+messagingSenderId = "Your_key"
+appId = "Your_key"
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+If you want to run it in any mobile device, like iOS or android, you will need the google plist file. You can do the same process of going to https://firebase.google.com and creating an iOS or android app there, then just copy the plist file to iOS or android folder depending on which one you prefer. 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+That's it! 
